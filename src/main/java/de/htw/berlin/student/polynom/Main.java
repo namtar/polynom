@@ -1,5 +1,7 @@
 package de.htw.berlin.student.polynom;
 
+import de.htw.berlin.student.polynom.controller.PolynomCalculatorController;
+
 /**
  * Main class for the polynom program.
  * 
@@ -8,8 +10,9 @@ package de.htw.berlin.student.polynom;
 public class Main {
 
 	public static void main(String[] args) {
-		
-		
+
+		PolynomCalculatorController controller = new PolynomCalculatorController();
+		controller.go();
 	}
 
 }

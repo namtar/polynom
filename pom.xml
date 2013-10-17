@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -8,30 +7,44 @@
 	<artifactId>polynom</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>quickstart</name>
-	<description></description>
+	<name>Polynome Calculator</name>
+	<description>Project to read polynomials from the console and calculate them</description>
 
-	<licenses>	
+	<licenses>
 	</licenses>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
 	<developers>
 		<developer>
 			<name>Matthias Drummer</name>
 			<email>matthias.drummer@gmail.com</email>
 		</developer>
 	</developers>
-	
+
 	<scm>
 		<url>https://github.com/namtar/polynom.git</url>
 		<connection>scm:git:https://github.com/namtar/polynom.git</connection>
 		<developerConnection>scm:git:https://github.com/namtar/polynom.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
-	
+		<tag>HEAD</tag>
+	</scm>
+
 	<dependencies>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.4.4</version>
+		</dependency>
+
+
 
 		<!-- LOGGING DEPENDENCIES - LOG4J -->
 		<dependency>
@@ -45,14 +58,14 @@
 			<version>1.2.16</version>
 		</dependency>
 
-		<!--  JUNIT DEPENDENCY FOR TESTING -->
+		<!-- JUNIT DEPENDENCY FOR TESTING -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.10</version>
 			<scope>test</scope>
 		</dependency>
-		            
+
 	</dependencies>
 	<build>
 		<resources>
@@ -100,7 +113,7 @@
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
 				</configuration>
-			</plugin>	
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
@@ -111,4 +124,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	</project>
+</project>
