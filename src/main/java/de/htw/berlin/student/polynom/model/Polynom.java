@@ -1,6 +1,7 @@
 package de.htw.berlin.student.polynom.model;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ public class Polynom {
 	 * @return a list of coefficients
 	 */
 	public List<BigDecimal> getCoefficients() {
-		return coefficients;
+		return Collections.unmodifiableList(coefficients);
 	}
 
 	@Override

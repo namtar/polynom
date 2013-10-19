@@ -39,4 +39,55 @@ public class PolynomCalculator {
 
 		return result;
 	}
+
+	/**
+	 * Multiplies two given polynoms.
+	 * 
+	 * @param poly1 the first polynom
+	 * @param poly2 the second polynom
+	 * @return the result
+	 */
+	public Polynom multiply(Polynom poly1, Polynom poly2) {
+
+		Polynom result = null;
+
+		// TODO: implement
+
+		return result;
+	}
+
+	/**
+	 * Subtracts two poylnoms.
+	 * 
+	 * @param poly1 the first polynom
+	 * @param poly2 the second polynom to substract from the first one
+	 * @return the result
+	 */
+	public Polynom subtract(Polynom poly1, Polynom poly2) {
+
+		Polynom result = null;
+
+		// TODO: implement
+		return result;
+	}
+
+	/**
+	 * Divides two polynoms.
+	 * 
+	 * @param poly1 the first polynom
+	 * @param poly2 the second polynom the first is divided by
+	 * @return the result of division
+	 */
+	public Polynom divideWithHorner(Polynom poly1, Polynom poly2) {
+
+		Polynom result = null;
+
+		// TODO: implement
+		return result;
+	}
+
+	public void derivate(Polynom polynom) {
+		// TODO: implement...... How to derivate a polynom??
+		// x^1 => 1x^1-1, x^2 => 2x^2-1
+	}
 }
