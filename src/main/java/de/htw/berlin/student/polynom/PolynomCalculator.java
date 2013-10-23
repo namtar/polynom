@@ -2,6 +2,7 @@ package de.htw.berlin.student.polynom;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,17 +44,46 @@ public class PolynomCalculator {
 	/**
 	 * Multiplies two given polynoms.
 	 * 
+	 * @see http://sol.cs.hm.edu/dpunkt-java-praktikum/polynomial/Polynomial.java
+	 * 
 	 * @param poly1 the first polynom
 	 * @param poly2 the second polynom
 	 * @return the result
 	 */
 	public Polynom multiply(Polynom poly1, Polynom poly2) {
 
-		Polynom result = null;
+		if (poly1 == null || poly2 == null) {
+			throw new IllegalArgumentException("None of the given polynoms may be null.");
+		}
 
-		// TODO: implement
+		// check for special cases
+		if (poly1.getCoefficients().isEmpty() || poly2.getCoefficients().isEmpty()) {
+			return new Polynom(Collections.<BigDecimal> emptyList());
+		}
+		// if a polynom has one element which value is one then return the other polynom.
+		if (poly1.getCoefficients().size() == 1 && poly1.getCoefficients().get(0).equals(new BigDecimal(1))) {
+			return poly2;
+		}
+		if (poly2.getCoefficients().size() == 1 && poly2.getCoefficients().get(0).equals(new BigDecimal(1))) {
+			return poly1;
+		}
 
-		return result;
+		// do calculation
+		BigDecimal[] coeff1 = (BigDecimal[]) poly1.getCoefficients().toArray();
+		BigDecimal[] coeff2 = (BigDecimal[]) poly2.getCoefficients().toArray();
+
+		BigDecimal[] multiplied = new BigDecimal[Math.max(coeff1.length, coeff2.length) + 1];
+		for (int i = 0; i < coeff1.length; i++) {
+			for (int j = 0; j < coeff2.length; j++) {
+				int newIndex = i + j;
+				if (multiplied[newIndex] == null) {
+					multiplied[newIndex] = new BigDecimal(0);
+				}
+				multiplied[newIndex].add(coeff1[i].multiply(coeff2[j]));
+			}
+		}
+
+		return new Polynom(Arrays.asList(multiplied));
 	}
 
 	/**
