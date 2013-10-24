@@ -97,7 +97,63 @@ public class PolynomCalculator {
 
 		Polynom result = null;
 
-		// TODO: implement
+		List<BigDecimal> substractedCoeff = new ArrayList<BigDecimal>();
+
+		// determine the number of iterations to do
+		int maxLength = poly1.getCoefficients().size() >= poly2.getCoefficients().size() ? poly1.getCoefficients().size() : poly2.getCoefficients().size();
+
+		for (int i = 0; i < maxLength; i++) {
+
+			BigDecimal coef1 = new BigDecimal(0); // is the coeff of listOne for the index if list has one else zero BigDecimal.
+			BigDecimal coef2 = new BigDecimal(0);// is the coeff of listOne for the index if list has one else zero BigDecimal.
+
+			if (i < poly1.getCoefficients().size()) {
+				coef1 = poly1.getCoefficients().get(i);
+			}
+			if (i < poly2.getCoefficients().size()) {
+				coef2 = poly2.getCoefficients().get(i);
+			}
+			substractedCoeff.add(coef1.subtract(coef2));
+		}
+		result = new Polynom(substractedCoeff);
+
+		return result;
+	}
+
+	/**
+	 * Adds two given polynoms.
+	 * 
+	 * @param poly1 the first polynom
+	 * @param poly2 the second polynom to be added to the first one
+	 * @return the result
+	 */
+	public Polynom add(Polynom poly1, Polynom poly2) {
+
+		Polynom result = null;
+
+		List<BigDecimal> addedCoeff = new ArrayList<BigDecimal>();
+
+		// determine which polynom has more coefficients
+		List<BigDecimal> listOne;
+		List<BigDecimal> listTwo;
+		if (poly1.getCoefficients().size() >= poly2.getCoefficients().size()) {
+			listOne = poly1.getCoefficients();
+			listTwo = poly2.getCoefficients();
+		} else {
+			listOne = poly2.getCoefficients();
+			listTwo = poly1.getCoefficients();
+		}
+
+		for (int i = 0; i < listOne.size(); i++) {
+			BigDecimal coef1 = listOne.get(i);
+			BigDecimal coef2 = new BigDecimal(0);
+			if (i < listTwo.size()) {
+				coef2 = listTwo.get(i);
+			}
+			addedCoeff.add(coef1.add(coef2));
+		}
+		result = new Polynom(addedCoeff);
+
 		return result;
 	}
 
