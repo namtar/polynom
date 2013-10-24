@@ -172,8 +172,24 @@ public class PolynomCalculator {
 		return result;
 	}
 
-	public void derivate(Polynom polynom) {
-		// TODO: implement...... How to derivate a polynom??
-		// x^1 => 1x^1-1, x^2 => 2x^2-1
+	/**
+	 * Do the first derivate of a polynom.
+	 * 
+	 * @param polynom the polynom to be derivated
+	 * @return the new polynom which represents the first derivation of a polynom.
+	 */
+	public Polynom derivate(Polynom polynom) {
+
+		Polynom result = null;
+		List<BigDecimal> newCoeffs = new ArrayList<BigDecimal>();
+
+		for (int i = 1; i < polynom.getCoefficients().size(); i++) {
+			// ignore x^0 (i=0). It will perish.
+			newCoeffs.add(polynom.getCoefficients().get(i).multiply(new BigDecimal(i)));
+		}
+
+		result = new Polynom(newCoeffs);
+
+		return result;
 	}
 }
