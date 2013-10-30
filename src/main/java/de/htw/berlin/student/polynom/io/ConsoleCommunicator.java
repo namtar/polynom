@@ -1,9 +1,13 @@
 package de.htw.berlin.student.polynom.io;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
 import de.htw.berlin.student.polynom.i18n.I18nResolver;
+import de.htw.berlin.student.polynom.model.Polynom;
 
 /**
  * A communicator class for console input and output handling.
@@ -40,14 +44,15 @@ public class ConsoleCommunicator {
 		System.out.println("Hello");
 	}
 
-	public String getPolynomial() {
+	public Polynom getPolynomial() {
 
 		scanner = new Scanner(System.in);
+		List<BigDecimal> coefficients = new ArrayList<BigDecimal>();
+
+		// TODO: MPI: Frage nach Grad des Polynoms und frage dann entsprechend des Grades die einzelnen Koeffizienten in geordneter Form x^0 ... ab.
 
 		System.out.print(I18nResolver.getString("resolvePolynomial"));
-		String result = "";
-		result = scanner.nextLine();
 
-		return result;
+		return new Polynom(coefficients);
 	}
 }
