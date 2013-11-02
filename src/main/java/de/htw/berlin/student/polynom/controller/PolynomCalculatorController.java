@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import de.htw.berlin.student.polynom.helper.PolynomParser;
 import de.htw.berlin.student.polynom.io.ConsoleCommunicator;
 import de.htw.berlin.student.polynom.model.Polynom;
 
