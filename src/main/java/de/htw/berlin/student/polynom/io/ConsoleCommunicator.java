@@ -67,7 +67,7 @@ public class ConsoleCommunicator {
             case 2:
                 close();
                 break;
-                
+
         }
 
     }
@@ -161,5 +161,33 @@ public class ConsoleCommunicator {
 
     public void close() {
         System.out.println("Vielen dank, auf Wiedersehen ");
+        System.exit(0);
+    }
+
+    public void opperation() {
+
+        this.scanner = new Scanner(System.in);
+
+        System.out.println("Bitte wählen Sie Ihre Rechenoperation aus: ");
+        System.out.println(" 1 = Addition ");
+        System.out.println(" 2 = Subtraktion ");
+        System.out.println(" 3 = Multiplikation ");
+        System.out.println(" 4 = Division ");
+        System.out.println();
+        int op = scanner.nextInt();
+        switch (op) {
+            case 1:
+                add;
+                break;
+            case 2:
+                sub;
+                break;
+            case 3:
+                multi;
+                break;
+            case 4:
+                div;
+                break;
+        }
     }
 }

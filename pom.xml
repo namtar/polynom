@@ -65,7 +65,12 @@
 			<version>4.10</version>
 			<scope>test</scope>
 		</dependency>
-
+	 <dependency>
+	  <groupId>de.htw.berlin.student</groupId>
+	  <artifactId>polynom</artifactId>
+	  <version>1.0-SNAPSHOT</version>
+	  <type>jar</type>
+	 </dependency>
 	</dependencies>
 	<build>
 		<resources>

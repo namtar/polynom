@@ -25,6 +25,7 @@ public class PolynomCalculatorController {
 	public void go() {
 
 		ConsoleCommunicator consoleReader = new ConsoleCommunicator();
+                
 
 		// consoleReader.getLocale();
 		// consoleReader.doGreetings();
