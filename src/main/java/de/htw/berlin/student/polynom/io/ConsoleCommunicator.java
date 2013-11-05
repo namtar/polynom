@@ -8,51 +8,158 @@ import java.util.Scanner;
 
 import de.htw.berlin.student.polynom.i18n.I18nResolver;
 import de.htw.berlin.student.polynom.model.Polynom;
+import java.util.Arrays;
+import static quicktime.QTSession.close;
 
 /**
  * A communicator class for console input and output handling.
- * 
+ *
  * @author Matthias Drummer
  */
 public class ConsoleCommunicator {
 
-	Scanner scanner;
+    Scanner scanner;
 
-	public ConsoleCommunicator() {
-	}
+    public ConsoleCommunicator() {
+    }
 
-	public void getLocale() {
+    public void getLocale() {
 
-		this.scanner = new Scanner(System.in);
+        this.scanner = new Scanner(System.in);
 
-		System.out.println("Please Select your Language.");
-		System.out.println("Press 1 for German.");
-		System.out.println("Press 2 for Englisch");
-		int choice = scanner.nextInt();
-		switch (choice) {
-			case 1:
-				Locale.setDefault(Locale.GERMAN);
-				break;
-			case 2:
-			default:
-				Locale.setDefault(Locale.US);
+        System.out.println("Please Select your Language.");
+        System.out.println("Press 1 for German.");
+        System.out.println("Press 2 for Englisch");
+        int choice = scanner.nextInt();
+        switch (choice) {
+            case 1:
+                Locale.setDefault(Locale.GERMAN);
+                break;
+            case 2:
+            default:
+                Locale.setDefault(Locale.US);
 
-		}
-	}
+        }
+    }
 
-	public void doGreetings() {
-		System.out.println("Hello");
-	}
+    public void doGreetings() {
+        System.out.println("####################################################");
+        System.out.println("####################################################");
+        System.out.println("######Herzlich Willkommen zum Polynomrechener#######");
+        System.out.println("####################################################");
+        System.out.println("####################################################");
+        System.out.println();
+    }
 
-	public Polynom getPolynomial() {
+    public void choose() {
 
-		scanner = new Scanner(System.in);
-		List<BigDecimal> coefficients = new ArrayList<BigDecimal>();
+        this.scanner = new Scanner(System.in);
 
-		// TODO: MPI: Frage nach Grad des Polynoms und frage dann entsprechend des Grades die einzelnen Koeffizienten in geordneter Form x^0 ... ab.
+        System.out.println("Bitte wählen Sie: ");
+        System.out.println(" 1 = Polynomrechner ");
+        System.out.println(" 2 = Programende ");
+        System.out.println();
+        int choose = scanner.nextInt();
+        switch (choose) {
+            case 1:
+                Polynom getPolynomial;
+                break;
+            case 2:
+                close();
+                break;
+                
+        }
 
-		System.out.print(I18nResolver.getString("resolvePolynomial"));
+    }
 
-		return new Polynom(coefficients);
-	}
+    public Polynom getPolynomial() {
+
+        scanner = new Scanner(System.in);
+        List<BigDecimal> coefficients = new ArrayList<BigDecimal>();
+
+        // TODO: MPI: Frage nach Grad des Polynoms und frage dann entsprechend des Grades die einzelnen Koeffizienten in geordneter Form x^0 ... ab.
+        System.out.print(I18nResolver.getString("resolvePolynomial"));
+
+        return new Polynom(coefficients);
+    }
+
+    public Polynom polyInput() {
+
+        scanner = new Scanner(System.in);
+        System.out.println("Bitte geben Sie den Grad Ihres Polynoms ein: ");
+        int grad = scanner.nextInt();
+        System.out.println("Ihr Grad: " + grad);
+
+        double ko[] = new double[grad + 1];
+
+        for (int i = grad; i >= 0; i--) {
+            System.out.println("Bitte geben Sie den Koeffizienten für x^" + i + " ein: ");
+            ko[i] = scanner.nextDouble();
+        }
+        for (int i = 0; i < ko.length; i++) {
+            System.out.print("Test: ");
+            if (ko[i] >= 0) {
+                System.out.print("+");
+            }
+            System.out.print(ko[i]);
+            System.out.println();
+        }
+
+        for (int i = 0; i < ko.length; i++) {
+            String koeffi = "Test1: ";
+            if (ko[i] >= 0) {
+                koeffi += "+";
+            }
+            koeffi += ko[i];
+            System.out.println(koeffi);
+        }
+
+        for (int i = 0; i < ko.length; i++) {
+            StringBuilder sb = new StringBuilder("Test2 :");
+            if (ko[i] >= 0) {
+                sb.append("+");
+            }
+            sb.append(ko[i]);
+            System.out.println(sb.toString());
+        }
+
+        List<BigDecimal> bdCoeffs = new ArrayList<BigDecimal>();
+        for (int i = 0; i < ko.length; i++) {
+            bdCoeffs.add(new BigDecimal(ko[i]));
+        }
+
+        Polynom polynom = new Polynom(bdCoeffs);
+
+        return polynom;
+    }
+
+    /**
+     * Baut die einzelnen Polynome zu einer Kette zusammen und gibts sie
+     * zusammenhängend aus
+     *
+     * @param polynom
+     */
+    public void polyOutput(Polynom polynom) {
+        StringBuilder sb = new StringBuilder("Ihr Polynom: ");
+        BigDecimal zeroDecimal = new BigDecimal(0);
+
+        List<BigDecimal> coeffs = polynom.getCoefficients();
+        for (int i = coeffs.size() - 1; i >= 0; i--) {
+
+            BigDecimal coeff = coeffs.get(i);
+
+            if (coeff.compareTo(zeroDecimal) >= 0) {
+                sb.append("+");
+            }
+            sb.append(coeff);
+            sb.append("x^");
+            sb.append(i);
+        }
+        System.out.println(sb.toString());
+
+    }
+
+    public void close() {
+        System.out.println("Vielen dank, auf Wiedersehen ");
+    }
 }
