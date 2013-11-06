@@ -1,4 +1,4 @@
-package de.htw.berlin.student.polynom;
+package de.htw.berlin.student.polynom.controller;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

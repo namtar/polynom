@@ -8,8 +8,7 @@ import java.util.Scanner;
 
 import de.htw.berlin.student.polynom.i18n.I18nResolver;
 import de.htw.berlin.student.polynom.model.Polynom;
-import java.util.Arrays;
-import static quicktime.QTSession.close;
+import java.util.InputMismatchException;
 
 /**
  * A communicator class for console input and output handling.
@@ -51,25 +50,34 @@ public class ConsoleCommunicator {
         System.out.println();
     }
 
-    public void choose() {
+    public int choose() {
 
         this.scanner = new Scanner(System.in);
 
-        System.out.println("Bitte wählen Sie: ");
-        System.out.println(" 1 = Polynomrechner ");
-        System.out.println(" 2 = Programende ");
-        System.out.println();
-        int choose = scanner.nextInt();
-        switch (choose) {
-            case 1:
-                Polynom getPolynomial;
-                break;
-            case 2:
-                close();
-                break;
+        while (true) {
+
+            System.out.println("Bitte wählen Sie: ");
+            System.out.println(" 1 = Polynomrechner ");
+            System.out.println(" 2 = Programende ");
+            System.out.println();
+
+            try {
+                int choose = scanner.nextInt();
+                System.out.println("Gewählt " + choose);
+                switch (choose) {
+                    case 1:
+                    case 2:
+                        return choose;
+                    default:
+                        System.out.println("Falsche Eingabe, bitte versuchen Sie es erneut!");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Falsche Eingabe. Bitte geben Sie eine Ganzzahl ein.");
+                this.scanner = new Scanner(System.in);
+//                e.printStackTrace();
+            }
 
         }
-
     }
 
     public Polynom getPolynomial() {
@@ -96,33 +104,31 @@ public class ConsoleCommunicator {
             System.out.println("Bitte geben Sie den Koeffizienten für x^" + i + " ein: ");
             ko[i] = scanner.nextDouble();
         }
-        for (int i = 0; i < ko.length; i++) {
-            System.out.print("Test: ");
-            if (ko[i] >= 0) {
-                System.out.print("+");
-            }
-            System.out.print(ko[i]);
-            System.out.println();
-        }
+        //for (int i = 0; i < ko.length; i++) {
+        //    System.out.print("Test: ");
+        //    if (ko[i] >= 0) {
+        //        System.out.print("+");
+        //   }
+        //    System.out.print(ko[i]);
+        //    System.out.println();
+        //}
 
-        for (int i = 0; i < ko.length; i++) {
-            String koeffi = "Test1: ";
-            if (ko[i] >= 0) {
-                koeffi += "+";
-            }
-            koeffi += ko[i];
-            System.out.println(koeffi);
-        }
-
-        for (int i = 0; i < ko.length; i++) {
-            StringBuilder sb = new StringBuilder("Test2 :");
-            if (ko[i] >= 0) {
-                sb.append("+");
-            }
-            sb.append(ko[i]);
-            System.out.println(sb.toString());
-        }
-
+        //for (int i = 0; i < ko.length; i++) {
+        //   String koeffi = "Test1: ";
+        //   if (ko[i] >= 0) {
+        //        koeffi += "+";
+        //    }
+        //    koeffi += ko[i];
+        //    System.out.println(koeffi);
+        //}
+        //for (int i = 0; i < ko.length; i++) {
+        //    StringBuilder sb = new StringBuilder("Test2 :");
+        //    if (ko[i] >= 0) {
+        //        sb.append("+");
+        //    }
+        //    sb.append(ko[i]);
+        //    System.out.println(sb.toString());
+        //}
         List<BigDecimal> bdCoeffs = new ArrayList<BigDecimal>();
         for (int i = 0; i < ko.length; i++) {
             bdCoeffs.add(new BigDecimal(ko[i]));
@@ -161,33 +167,50 @@ public class ConsoleCommunicator {
 
     public void close() {
         System.out.println("Vielen dank, auf Wiedersehen ");
-        System.exit(0);
+
     }
 
-    public void opperation() {
+    public int opperation() {
 
         this.scanner = new Scanner(System.in);
 
         System.out.println("Bitte wählen Sie Ihre Rechenoperation aus: ");
+        System.out.println(" 0 = Hauptmenü ");
         System.out.println(" 1 = Addition ");
         System.out.println(" 2 = Subtraktion ");
         System.out.println(" 3 = Multiplikation ");
         System.out.println(" 4 = Division ");
         System.out.println();
         int op = scanner.nextInt();
-        switch (op) {
-            case 1:
-                add;
-                break;
-            case 2:
-                sub;
-                break;
-            case 3:
-                multi;
-                break;
-            case 4:
-                div;
-                break;
-        }
+        return op;
+//        switch (op) {
+//            case 1:
+//                add;
+//                break;
+//            case 2:
+//                sub;
+//                break;
+//            case 3:
+//                multi;
+//                break;
+//            case 4:
+//                div;
+//                break;
+//        }
     }
+
+    public int outputSavedPolynoms(List<Polynom> polynoms) {
+
+        int chosenOne = -1;
+
+        System.out.println("Bitte wählen sie ein Polynom aus mit dem gerechnet werden soll.");
+        for (int i = 0; i < polynoms.size(); i++) {
+            System.out.print(i + "\t");
+            polyOutput(polynoms.get(i));
+
+        }
+
+        return chosenOne;
+    }
+
 }
