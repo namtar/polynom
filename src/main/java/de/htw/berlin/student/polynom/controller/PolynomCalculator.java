@@ -159,7 +159,7 @@ public class PolynomCalculator {
 	}
 
 	/**
-	 * Divides two polynoms.
+	 * Divides a polynom by (x - given value).
 	 * 
 	 * @param poly1 the first polynom
 	 * @param value the value to divide by (x-value)
