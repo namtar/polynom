@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import de.htw.berlin.student.polynom.model.DividedPolynom;
 import de.htw.berlin.student.polynom.model.Polynom;
 
 /**
@@ -161,15 +162,32 @@ public class PolynomCalculator {
 	 * Divides two polynoms.
 	 * 
 	 * @param poly1 the first polynom
-	 * @param poly2 the second polynom the first is divided by
+	 * @param value the value to divide by (x-value)
 	 * @return the result of division
 	 */
-	public Polynom divideWithHorner(Polynom poly1, Polynom poly2) {
+	public DividedPolynom divideWithHorner(Polynom poly1, BigDecimal value) {
 
-		Polynom result = null;
+		List<BigDecimal> newCoeffs = new ArrayList<BigDecimal>();
 
-		// TODO: implement
-		return result;
+		List<BigDecimal> poly1Coeffs = poly1.getCoefficients();
+		for (int i = poly1Coeffs.size() - 1; i >= 0; i--) {
+			if (i == poly1Coeffs.size() - 1) {
+				newCoeffs.add(poly1.getCoefficients().get(i));
+			} else {
+				newCoeffs.add(value.multiply(newCoeffs.get(i - 1)).add(poly1Coeffs.get(i)));
+			}
+		}
+
+		List<BigDecimal> coefficients = new ArrayList<BigDecimal>();
+		// start with size - 2 because we dont want to have the rest of the division in our coefficients list
+		for (int i = newCoeffs.size() - 2; i >= 0; i--) {
+			coefficients.add(newCoeffs.get(i));
+		}
+
+		Polynom polynom = new Polynom(coefficients);
+		BigDecimal rest = newCoeffs.get(newCoeffs.size() - 1);
+
+		return new DividedPolynom(polynom, rest);
 	}
 
 	/**
