@@ -52,12 +52,6 @@ public class PolynomCalculatorController {
 			}
 
 		}
-
-		/**
-		 * Menue posibilities: Base Menu: - Enter Polynom - Calculation Submenu - Exit Program Calulation Submenu: -
-		 * Enter Polynom - Add - Substract - Mulitply - Divide - Evaluate - Derive - Leave Submenu
-		 */
-
 	}
 
 	private void menueTwo() {
