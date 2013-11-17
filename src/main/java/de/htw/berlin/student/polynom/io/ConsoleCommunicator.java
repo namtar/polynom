@@ -1,13 +1,14 @@
 package de.htw.berlin.student.polynom.io;
 
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 
+import de.htw.berlin.student.polynom.Main;
 import de.htw.berlin.student.polynom.controller.Operation;
 import de.htw.berlin.student.polynom.model.Polynom;
 import de.htw.berlin.student.polynom.model.PolynomTuple;
@@ -20,7 +21,17 @@ import de.htw.berlin.student.polynom.model.PolynomTuple;
  */
 public class ConsoleCommunicator {
 
+	private PrintStream out;
+
 	public ConsoleCommunicator() {
+		try {
+			// Special case for windows console
+			out = new PrintStream(System.out, true, "CP850");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			// This is fatal. Kill program.
+			System.exit(Main.EXIT_ERROR);
+		}
 	}
 
 	public void doGreetings() {
@@ -43,15 +54,15 @@ public class ConsoleCommunicator {
 
 		while (true) {
 
-			System.out.println("Bitte wählen Sie: ");
-			System.out.println(" 1 = Polynomrechner ");
-			System.out.println(" 2 = Polynom eingeben");
-			System.out.println(" 3 = Programende ");
-			System.out.println();
+			out.println("Bitte wählen Sie: ");
+			out.println(" 1 = Polynomrechner ");
+			out.println(" 2 = Polynom eingeben");
+			out.println(" 3 = Programende ");
+			out.println();
 
 			try {
 				int choose = scanner.nextInt();
-				System.out.println("Gewählt " + choose);
+				out.println("Gewählt " + choose);
 				switch (choose) {
 					case 1:
 						return Operation.CALCULATE;
@@ -60,10 +71,10 @@ public class ConsoleCommunicator {
 					case 3:
 						return Operation.EXIT;
 					default:
-						System.out.println("Falsche Eingabe, bitte versuchen Sie es erneut!");
+						out.println("Falsche Eingabe, bitte versuchen Sie es erneut!");
 				}
 			} catch (InputMismatchException e) {
-				System.out.println("Falsche Eingabe. Bitte geben Sie eine Ganzzahl ein.");
+				out.println("Falsche Eingabe. Bitte geben Sie eine Ganzzahl ein.");
 				scanner = new Scanner(System.in);
 			}
 
@@ -78,9 +89,9 @@ public class ConsoleCommunicator {
 	public Polynom polyInput() {
 
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Bitte geben Sie den Grad Ihres Polynoms ein: ");
+		out.println("Bitte geben Sie den Grad Ihres Polynoms ein: ");
 		int grad = scanner.nextInt();
-		System.out.println("Ihr Grad: " + grad);
+		out.println("Ihr Grad: " + grad);
 
 		double ko[] = new double[grad + 1];
 
@@ -90,11 +101,11 @@ public class ConsoleCommunicator {
 			// valid.
 			while (true) {
 				try {
-					System.out.println("Bitte geben Sie den Koeffizienten für x^" + i + " ein: ");
+					out.println("Bitte geben Sie den Koeffizienten für x^" + i + " ein: ");
 					ko[i] = scanner.nextDouble();
 					break; // break input loop if no exception was thrown and proceed to next coefficient.
 				} catch (InputMismatchException e) {
-					System.out.println("Falsche Eingabe. Bitte geben Sie eine Ganzzahl oder Kommazahl ein.");
+					out.println("Falsche Eingabe. Bitte geben Sie eine Ganzzahl oder Kommazahl ein.");
 					scanner = new Scanner(System.in);
 				}
 			}
@@ -131,15 +142,15 @@ public class ConsoleCommunicator {
 			sb.append("x^");
 			sb.append(i);
 		}
-		System.out.println(sb.toString());
-
+		out.println(sb.toString());
+		out.println();
 	}
 
 	/**
 	 * Displays a bye bye message.
 	 */
 	public void close() {
-		System.out.println("Vielen dank, auf Wiedersehen ");
+		out.println("Vielen dank, auf Wiedersehen ");
 	}
 
 	/**
@@ -151,16 +162,16 @@ public class ConsoleCommunicator {
 
 		Scanner scanner = new Scanner(System.in);
 
-		System.out.println("Bitte wählen Sie Ihre Rechenoperation aus: ");
-		System.out.println(" 0 = Hauptmenü ");
-		System.out.println(" 1 = Addition ");
-		System.out.println(" 2 = Subtraktion ");
-		System.out.println(" 3 = Multiplikation ");
-		System.out.println(" 4 = Division mittels Horner");
-		System.out.println(" 5 = Substitution von x ");
-		System.out.println(" 6 = 1. Ableitung ");
-		System.out.println(" 7 = Polynom eingeben");
-		System.out.println();
+		out.println("Bitte wählen Sie Ihre Rechenoperation aus: ");
+		out.println(" 0 = Hauptmenü ");
+		out.println(" 1 = Addition ");
+		out.println(" 2 = Subtraktion ");
+		out.println(" 3 = Multiplikation ");
+		out.println(" 4 = Division mittels Horner");
+		out.println(" 5 = Substitution von x ");
+		out.println(" 6 = 1. Ableitung ");
+		out.println(" 7 = Polynom eingeben");
+		out.println();
 
 		Operation operation = null;
 
@@ -199,10 +210,10 @@ public class ConsoleCommunicator {
 						loop = false;
 						break;
 					default:
-						System.out.println("Keine korrekte Eingabe. Bitte wiederholen.");
+						out.println("Keine korrekte Eingabe. Bitte wiederholen.");
 				}
 			} catch (InputMismatchException e) {
-				System.out.println("Falsche Eingabe. Bitte geben Sie eine Ganzzahl ein, die den Möglichkeiten der Aufzählung entspricht.");
+				out.println("Falsche Eingabe. Bitte geben Sie eine Ganzzahl ein, die den Möglichkeiten der Aufzählung entspricht.");
 				scanner = new Scanner(System.in);
 			}
 		}
@@ -220,9 +231,9 @@ public class ConsoleCommunicator {
 
 		Polynom chosenOne = null;
 
-		System.out.println("Bitte wählen sie ein Polynom aus mit dem gerechnet werden soll.");
+		out.println("Bitte wählen sie ein Polynom aus mit dem gerechnet werden soll.");
 		for (int i = 0; i < polynoms.size(); i++) {
-			System.out.print(i + "\t");
+			out.print(i + "\t");
 			polyOutput(polynoms.get(i));
 
 		}
@@ -233,15 +244,15 @@ public class ConsoleCommunicator {
 				int choice = scanner.nextInt();
 				// validatate that no choice has been made that doesen match the posibilities.
 				if (choice < 0 || choice >= polynoms.size()) {
-					System.out.println("Keine gültige Auswahl. Bitte erneut eingeben.");
-					System.out.println();
+					out.println("Keine gültige Auswahl. Bitte erneut eingeben.");
+					out.println();
 				} else {
 					chosenOne = polynoms.get(choice);
 					break;
 				}
 			} catch (InputMismatchException e) {
-				System.out.println("Falsche Eingabe. Bitte geben sie eine Ganzzahl ein, die den Möglichkeiten der Liste entspricht.");
-				System.out.println();
+				out.println("Falsche Eingabe. Bitte geben sie eine Ganzzahl ein, die den Möglichkeiten der Liste entspricht.");
+				out.println();
 				scanner = new Scanner(System.in);
 			}
 		}
@@ -251,11 +262,11 @@ public class ConsoleCommunicator {
 
 	public void ouptutSavedPolynoms(List<Polynom> polynoms) {
 
-		System.out.println("Gespeicherte Polynome:");
-		System.out.println(); // add an empty line
+		out.println("Gespeicherte Polynome:");
+		out.println(); // add an empty line
 
 		for (int i = 0; i < polynoms.size(); i++) {
-			System.out.print(i + "\t");
+			out.print(i + "\t");
 			polyOutput(polynoms.get(i));
 
 		}
@@ -277,21 +288,21 @@ public class ConsoleCommunicator {
 		boolean finished = false;
 		Scanner scanner = new Scanner(System.in);
 		while (!finished) {
-			System.out.println("Bitte wählen Sie das erste Polynom");
+			out.println("Bitte wählen Sie das erste Polynom");
 
 			try {
 				int choice = scanner.nextInt();
 				// validatate that no choice has been made that doesen match the posibilities.
 				if (choice < 0 || choice >= polynoms.size()) {
-					System.out.println("Keine gültige Auswahl. Bitte erneut eingeben.");
-					System.out.println();
+					out.println("Keine gültige Auswahl. Bitte erneut eingeben.");
+					out.println();
 				} else {
 					poly1 = polynoms.get(choice);
 					finished = true;
 				}
 			} catch (InputMismatchException e) {
-				System.out.println("Falsche Eingabe. Bitte erneut versuchen.");
-				System.out.println();
+				out.println("Falsche Eingabe. Bitte erneut versuchen.");
+				out.println();
 				scanner = new Scanner(System.in);
 			}
 
@@ -299,22 +310,22 @@ public class ConsoleCommunicator {
 		finished = false;
 		ouptutSavedPolynoms(polynoms);
 		while (!finished) {
-			System.out.println();
-			System.out.println("Bitte wähleb Sie das zweite Polynom");
+			out.println();
+			out.println("Bitte wähleb Sie das zweite Polynom");
 
 			try {
 				int choice = scanner.nextInt();
 				// validatate that no choice has been made that doesen match the posibilities.
 				if (choice < 0 || choice >= polynoms.size()) {
-					System.out.println("Keine gültige Auswahl. Bitte erneut eingeben.");
-					System.out.println();
+					out.println("Keine gültige Auswahl. Bitte erneut eingeben.");
+					out.println();
 				} else {
 					poly2 = polynoms.get(choice);
 					finished = true;
 				}
 			} catch (InputMismatchException e) {
-				System.out.println("Falsche Eingabe. Bitte erneut versuchen.");
-				System.out.println();
+				out.println("Falsche Eingabe. Bitte erneut versuchen.");
+				out.println();
 				scanner = new Scanner(System.in);
 			}
 		}
@@ -356,7 +367,7 @@ public class ConsoleCommunicator {
 		}
 
 		sb.append("ist:");
-		System.out.println(sb.toString());
+		out.println(sb.toString());
 		System.out.println();
 	}
 
@@ -376,8 +387,8 @@ public class ConsoleCommunicator {
 				result = scanner.nextBigDecimal();
 				break;
 			} catch (InputMismatchException e) {
-				System.out.println("Falsche Eingabe. Bitte erneut versuchen.");
-				System.out.println();
+				out.println("Falsche Eingabe. Bitte erneut versuchen.");
+				out.println();
 				scanner = new Scanner(System.in);
 			}
 		}
@@ -390,7 +401,8 @@ public class ConsoleCommunicator {
 	 * @param message the message
 	 */
 	public void outputMessage(String message) {
-		System.out.println(message);		
+		out.println(message);
+		out.println();
 	}
 
 }
