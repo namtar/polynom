@@ -2,215 +2,395 @@ package de.htw.berlin.student.polynom.io;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
-
-import de.htw.berlin.student.polynom.i18n.I18nResolver;
-import de.htw.berlin.student.polynom.model.Polynom;
+import java.util.HashSet;
 import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
+
+import de.htw.berlin.student.polynom.controller.Operation;
+import de.htw.berlin.student.polynom.model.Polynom;
+import de.htw.berlin.student.polynom.model.PolynomTuple;
 
 /**
  * A communicator class for console input and output handling.
- *
+ * 
  * @author Matthias Drummer
+ * @author Marcel Piater
  */
 public class ConsoleCommunicator {
 
-    Scanner scanner;
+	public ConsoleCommunicator() {
+	}
 
-    public ConsoleCommunicator() {
-    }
+	public void doGreetings() {
+		System.out.println("####################################################");
+		System.out.println("####################################################");
+		System.out.println("######Herzlich Willkommen zum Polynomrechener#######");
+		System.out.println("####################################################");
+		System.out.println("####################################################");
+		System.out.println();
+	}
 
-    public void getLocale() {
+	/**
+	 * Input method for the operations of the base menu.
+	 * 
+	 * @return the chosen {@link Operation}
+	 */
+	public Operation choose() {
 
-        this.scanner = new Scanner(System.in);
+		Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Please Select your Language.");
-        System.out.println("Press 1 for German.");
-        System.out.println("Press 2 for Englisch");
-        int choice = scanner.nextInt();
-        switch (choice) {
-            case 1:
-                Locale.setDefault(Locale.GERMAN);
-                break;
-            case 2:
-            default:
-                Locale.setDefault(Locale.US);
+		while (true) {
 
-        }
-    }
+			System.out.println("Bitte wählen Sie: ");
+			System.out.println(" 1 = Polynomrechner ");
+			System.out.println(" 2 = Polynom eingeben");
+			System.out.println(" 3 = Programende ");
+			System.out.println();
 
-    public void doGreetings() {
-        System.out.println("####################################################");
-        System.out.println("####################################################");
-        System.out.println("######Herzlich Willkommen zum Polynomrechener#######");
-        System.out.println("####################################################");
-        System.out.println("####################################################");
-        System.out.println();
-    }
+			try {
+				int choose = scanner.nextInt();
+				System.out.println("Gewählt " + choose);
+				switch (choose) {
+					case 1:
+						return Operation.CALCULATE;
+					case 2:
+						return Operation.INPUT_POLY;
+					case 3:
+						return Operation.EXIT;
+					default:
+						System.out.println("Falsche Eingabe, bitte versuchen Sie es erneut!");
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("Falsche Eingabe. Bitte geben Sie eine Ganzzahl ein.");
+				scanner = new Scanner(System.in);
+			}
 
-    public int choose() {
+		}
+	}
 
-        this.scanner = new Scanner(System.in);
+	/**
+	 * Method to input one polynom.
+	 * 
+	 * @return a new {@link Polynom}
+	 */
+	public Polynom polyInput() {
 
-        while (true) {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Bitte geben Sie den Grad Ihres Polynoms ein: ");
+		int grad = scanner.nextInt();
+		System.out.println("Ihr Grad: " + grad);
 
-            System.out.println("Bitte wählen Sie: ");
-            System.out.println(" 1 = Polynomrechner ");
-            System.out.println(" 2 = Programende ");
-            System.out.println();
+		double ko[] = new double[grad + 1];
 
-            try {
-                int choose = scanner.nextInt();
-                System.out.println("Gewählt " + choose);
-                switch (choose) {
-                    case 1:
-                    case 2:
-                        return choose;
-                    default:
-                        System.out.println("Falsche Eingabe, bitte versuchen Sie es erneut!");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Falsche Eingabe. Bitte geben Sie eine Ganzzahl ein.");
-                this.scanner = new Scanner(System.in);
-//                e.printStackTrace();
-            }
+		for (int i = grad; i >= 0; i--) {
 
-        }
-    }
+			// loop to ensure the correct input of one coefficient. One will remain in this loop until the input is
+			// valid.
+			while (true) {
+				try {
+					System.out.println("Bitte geben Sie den Koeffizienten für x^" + i + " ein: ");
+					ko[i] = scanner.nextDouble();
+					break; // break input loop if no exception was thrown and proceed to next coefficient.
+				} catch (InputMismatchException e) {
+					System.out.println("Falsche Eingabe. Bitte geben Sie eine Ganzzahl oder Kommazahl ein.");
+					scanner = new Scanner(System.in);
+				}
+			}
+		}
 
-    public Polynom getPolynomial() {
+		List<BigDecimal> bdCoeffs = new ArrayList<BigDecimal>();
+		for (int i = 0; i < ko.length; i++) {
+			bdCoeffs.add(new BigDecimal(ko[i]));
+		}
 
-        scanner = new Scanner(System.in);
-        List<BigDecimal> coefficients = new ArrayList<BigDecimal>();
+		Polynom polynom = new Polynom(bdCoeffs);
 
-        // TODO: MPI: Frage nach Grad des Polynoms und frage dann entsprechend des Grades die einzelnen Koeffizienten in geordneter Form x^0 ... ab.
-        System.out.print(I18nResolver.getString("resolvePolynomial"));
+		return polynom;
+	}
 
-        return new Polynom(coefficients);
-    }
+	/**
+	 * Baut die einzelnen Polynome zu einer Kette zusammen und gibts sie zusammenhängend aus
+	 * 
+	 * @param polynom the given {@link Polynom}
+	 */
+	public void polyOutput(Polynom polynom) {
+		StringBuilder sb = new StringBuilder("Ihr Polynom: ");
+		BigDecimal zeroDecimal = new BigDecimal(0);
 
-    public Polynom polyInput() {
+		List<BigDecimal> coeffs = polynom.getCoefficients();
+		for (int i = coeffs.size() - 1; i >= 0; i--) {
 
-        scanner = new Scanner(System.in);
-        System.out.println("Bitte geben Sie den Grad Ihres Polynoms ein: ");
-        int grad = scanner.nextInt();
-        System.out.println("Ihr Grad: " + grad);
+			BigDecimal coeff = coeffs.get(i);
 
-        double ko[] = new double[grad + 1];
+			if (coeff.compareTo(zeroDecimal) >= 0) {
+				sb.append("+");
+			}
+			sb.append(coeff);
+			sb.append("x^");
+			sb.append(i);
+		}
+		System.out.println(sb.toString());
 
-        for (int i = grad; i >= 0; i--) {
-            System.out.println("Bitte geben Sie den Koeffizienten für x^" + i + " ein: ");
-            ko[i] = scanner.nextDouble();
-        }
-        //for (int i = 0; i < ko.length; i++) {
-        //    System.out.print("Test: ");
-        //    if (ko[i] >= 0) {
-        //        System.out.print("+");
-        //   }
-        //    System.out.print(ko[i]);
-        //    System.out.println();
-        //}
+	}
 
-        //for (int i = 0; i < ko.length; i++) {
-        //   String koeffi = "Test1: ";
-        //   if (ko[i] >= 0) {
-        //        koeffi += "+";
-        //    }
-        //    koeffi += ko[i];
-        //    System.out.println(koeffi);
-        //}
-        //for (int i = 0; i < ko.length; i++) {
-        //    StringBuilder sb = new StringBuilder("Test2 :");
-        //    if (ko[i] >= 0) {
-        //        sb.append("+");
-        //    }
-        //    sb.append(ko[i]);
-        //    System.out.println(sb.toString());
-        //}
-        List<BigDecimal> bdCoeffs = new ArrayList<BigDecimal>();
-        for (int i = 0; i < ko.length; i++) {
-            bdCoeffs.add(new BigDecimal(ko[i]));
-        }
+	/**
+	 * Displays a bye bye message.
+	 */
+	public void close() {
+		System.out.println("Vielen dank, auf Wiedersehen ");
+	}
 
-        Polynom polynom = new Polynom(bdCoeffs);
+	/**
+	 * Method to choose a mathematical operation.
+	 * 
+	 * @return the chosen {@link Operation}
+	 */
+	public Operation opperation() {
 
-        return polynom;
-    }
+		Scanner scanner = new Scanner(System.in);
 
-    /**
-     * Baut die einzelnen Polynome zu einer Kette zusammen und gibts sie
-     * zusammenhängend aus
-     *
-     * @param polynom
-     */
-    public void polyOutput(Polynom polynom) {
-        StringBuilder sb = new StringBuilder("Ihr Polynom: ");
-        BigDecimal zeroDecimal = new BigDecimal(0);
+		System.out.println("Bitte wählen Sie Ihre Rechenoperation aus: ");
+		System.out.println(" 0 = Hauptmenü ");
+		System.out.println(" 1 = Addition ");
+		System.out.println(" 2 = Subtraktion ");
+		System.out.println(" 3 = Multiplikation ");
+		System.out.println(" 4 = Division mittels Horner");
+		System.out.println(" 5 = Substitution von x ");
+		System.out.println(" 6 = 1. Ableitung ");
+		System.out.println(" 7 = Polynom eingeben");
+		System.out.println();
 
-        List<BigDecimal> coeffs = polynom.getCoefficients();
-        for (int i = coeffs.size() - 1; i >= 0; i--) {
+		Operation operation = null;
 
-            BigDecimal coeff = coeffs.get(i);
+		boolean loop = true;
+		while (loop) {
+			try {
+				int op = scanner.nextInt();
 
-            if (coeff.compareTo(zeroDecimal) >= 0) {
-                sb.append("+");
-            }
-            sb.append(coeff);
-            sb.append("x^");
-            sb.append(i);
-        }
-        System.out.println(sb.toString());
+				switch (op) {
+					case 0:
+						operation = Operation.LEAVE_SUBMENU;
+						loop = false;
+						break;
+					case 1:
+						operation = Operation.ADD;
+						loop = false;
+						break;
+					case 2:
+						operation = Operation.SUBSTRACT;
+						loop = false;
+						break;
+					case 3:
+						operation = Operation.MULITPLY;
+						loop = false;
+						break;
+					case 4:
+						operation = Operation.DIVIDE;
+						loop = false;
+						break;
+					case 5:
+						operation = Operation.EVALUATE;
+						loop = false;
+						break;
+					case 6:
+						operation = Operation.DERIVE;
+						loop = false;
+						break;
+					default:
+						System.out.println("Keine korrekte Eingabe. Bitte wiederholen.");
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("Falsche Eingabe. Bitte geben Sie eine Ganzzahl ein, die den Möglichkeiten der Aufzählung entspricht.");
+				scanner = new Scanner(System.in);
+			}
+		}
+		return operation;
 
-    }
+	}
 
-    public void close() {
-        System.out.println("Vielen dank, auf Wiedersehen ");
+	/**
+	 * Method to output all saved polynoms for calculation choice.
+	 * 
+	 * @param polynoms the polynoms to output
+	 * @return the chosen polynom or null if no polynom was chosen
+	 */
+	public Polynom chooseOnePolynomForCalculation(List<Polynom> polynoms) {
 
-    }
+		Polynom chosenOne = null;
 
-    public int opperation() {
+		System.out.println("Bitte wählen sie ein Polynom aus mit dem gerechnet werden soll.");
+		for (int i = 0; i < polynoms.size(); i++) {
+			System.out.print(i + "\t");
+			polyOutput(polynoms.get(i));
 
-        this.scanner = new Scanner(System.in);
+		}
+		Scanner scanner = new Scanner(System.in);
+		while (true) {
 
-        System.out.println("Bitte wählen Sie Ihre Rechenoperation aus: ");
-        System.out.println(" 0 = Hauptmenü ");
-        System.out.println(" 1 = Addition ");
-        System.out.println(" 2 = Subtraktion ");
-        System.out.println(" 3 = Multiplikation ");
-        System.out.println(" 4 = Division ");
-        System.out.println();
-        int op = scanner.nextInt();
-        return op;
-//        switch (op) {
-//            case 1:
-//                add;
-//                break;
-//            case 2:
-//                sub;
-//                break;
-//            case 3:
-//                multi;
-//                break;
-//            case 4:
-//                div;
-//                break;
-//        }
-    }
+			try {
+				int choice = scanner.nextInt();
+				// validatate that no choice has been made that doesen match the posibilities.
+				if (choice < 0 || choice >= polynoms.size()) {
+					System.out.println("Keine gültige Auswahl. Bitte erneut eingeben.");
+					System.out.println();
+				} else {
+					chosenOne = polynoms.get(choice);
+					break;
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("Falsche Eingabe. Bitte geben sie eine Ganzzahl ein, die den Möglichkeiten der Liste entspricht.");
+				System.out.println();
+				scanner = new Scanner(System.in);
+			}
+		}
 
-    public int outputSavedPolynoms(List<Polynom> polynoms) {
+		return chosenOne;
+	}
 
-        int chosenOne = -1;
+	public void ouptutSavedPolynoms(List<Polynom> polynoms) {
 
-        System.out.println("Bitte wählen sie ein Polynom aus mit dem gerechnet werden soll.");
-        for (int i = 0; i < polynoms.size(); i++) {
-            System.out.print(i + "\t");
-            polyOutput(polynoms.get(i));
+		System.out.println("Gespeicherte Polynome:");
+		System.out.println(); // add an empty line
 
-        }
+		for (int i = 0; i < polynoms.size(); i++) {
+			System.out.print(i + "\t");
+			polyOutput(polynoms.get(i));
 
-        return chosenOne;
-    }
+		}
+	}
+
+	/**
+	 * Method that returns 2 Polynoms for calculation. <br>
+	 * TODO: error handling for wrong inputs is redundant. Fix later.
+	 * 
+	 * @param polynoms a list of saved {@link Polynom}
+	 * @return a {@link PolynomTuple} that contains exactly two polynoms
+	 */
+	public PolynomTuple chooseTwoPolynomsForCalculation(List<Polynom> polynoms) {
+
+		Polynom poly1 = null;
+		Polynom poly2 = null;
+		ouptutSavedPolynoms(polynoms);
+
+		boolean finished = false;
+		Scanner scanner = new Scanner(System.in);
+		while (!finished) {
+			System.out.println("Bitte wählen Sie das erste Polynom");
+
+			try {
+				int choice = scanner.nextInt();
+				// validatate that no choice has been made that doesen match the posibilities.
+				if (choice < 0 || choice >= polynoms.size()) {
+					System.out.println("Keine gültige Auswahl. Bitte erneut eingeben.");
+					System.out.println();
+				} else {
+					poly1 = polynoms.get(choice);
+					finished = true;
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("Falsche Eingabe. Bitte erneut versuchen.");
+				System.out.println();
+				scanner = new Scanner(System.in);
+			}
+
+		}
+		finished = false;
+		ouptutSavedPolynoms(polynoms);
+		while (!finished) {
+			System.out.println();
+			System.out.println("Bitte wähleb Sie das zweite Polynom");
+
+			try {
+				int choice = scanner.nextInt();
+				// validatate that no choice has been made that doesen match the posibilities.
+				if (choice < 0 || choice >= polynoms.size()) {
+					System.out.println("Keine gültige Auswahl. Bitte erneut eingeben.");
+					System.out.println();
+				} else {
+					poly2 = polynoms.get(choice);
+					finished = true;
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("Falsche Eingabe. Bitte erneut versuchen.");
+				System.out.println();
+				scanner = new Scanner(System.in);
+			}
+		}
+
+		return new PolynomTuple(poly1, poly2);
+	}
+
+	/**
+	 * Method outputs a text for the result of the given mathematical operation.
+	 * 
+	 * @param operation the {@link Operation}
+	 */
+	public void outputCalculationResultMessage(Operation operation) {
+
+		StringBuilder sb = new StringBuilder("Das Ergebnis Ihrer ");
+
+		switch (operation) {
+			case ADD:
+				sb.append("Addition ");
+				break;
+			case SUBSTRACT:
+				sb.append("Substraction ");
+				break;
+			case MULITPLY:
+				sb.append("Multiplikation ");
+				break;
+			case DIVIDE:
+				sb.append("Division ");
+				break;
+			case EVALUATE:
+				sb.append("Substitution ");
+				break;
+			case DERIVE:
+				sb.append("1. Ableitung ");
+				break;
+			default:
+				throw new UnsupportedOperationException("Operation is not supported yet: " + operation.name());
+
+		}
+
+		sb.append("ist:");
+		System.out.println(sb.toString());
+		System.out.println();
+	}
+
+	/**
+	 * Method that allows to input a value specified by the given message
+	 * 
+	 * @param message the message to display
+	 * @return the input value
+	 */
+	public BigDecimal inputValue(String message) {
+
+		System.out.println(message);
+		BigDecimal result = null;
+		while (true) {
+			Scanner scanner = new Scanner(System.in);
+			try {
+				result = scanner.nextBigDecimal();
+				break;
+			} catch (InputMismatchException e) {
+				System.out.println("Falsche Eingabe. Bitte erneut versuchen.");
+				System.out.println();
+				scanner = new Scanner(System.in);
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Method to output a given message.
+	 * 
+	 * @param message the message
+	 */
+	public void outputMessage(String message) {
+		System.out.println(message);		
+	}
 
 }
