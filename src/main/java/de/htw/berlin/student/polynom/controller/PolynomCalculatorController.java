@@ -46,6 +46,9 @@ public class PolynomCalculatorController {
 					communicator.close();
 					System.exit(Main.EXIT_SUCCESS);
 					break;
+				case OUTPUT_SAVED_POLY:
+					communicator.ouptutSavedPolynoms(polynoms);
+					break;
 				default:
 					throw new UnsupportedOperationException("The chosen operation is not yet supported: " + choose.name());
 			}

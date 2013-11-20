@@ -16,5 +16,6 @@ public enum Operation {
 	MULITPLY,
 	DIVIDE,
 	DERIVE,
-	LEAVE_SUBMENU;
+	LEAVE_SUBMENU,
+	OUTPUT_SAVED_POLY;
 }

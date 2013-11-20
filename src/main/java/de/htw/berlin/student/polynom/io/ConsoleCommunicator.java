@@ -26,7 +26,8 @@ public class ConsoleCommunicator {
 	public ConsoleCommunicator() {
 		try {
 			// Special case for windows console
-			out = new PrintStream(System.out, true, "CP850");
+			// out = new PrintStream(System.out, true, "CP850");
+			out = new PrintStream(System.out, true, "UTF8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			// This is fatal. Kill program.
@@ -57,7 +58,8 @@ public class ConsoleCommunicator {
 			out.println("Bitte wählen Sie: ");
 			out.println(" 1 = Polynomrechner ");
 			out.println(" 2 = Polynom eingeben");
-			out.println(" 3 = Programende ");
+			out.println(" 3 = Gespeicherte Polynome ausgeben ");
+			out.println(" 4 = Programende ");
 			out.println();
 
 			try {
@@ -69,6 +71,8 @@ public class ConsoleCommunicator {
 					case 2:
 						return Operation.INPUT_POLY;
 					case 3:
+						return Operation.OUTPUT_SAVED_POLY;
+					case 4:
 						return Operation.EXIT;
 					default:
 						out.println("Falsche Eingabe, bitte versuchen Sie es erneut!");
@@ -89,10 +93,25 @@ public class ConsoleCommunicator {
 	public Polynom polyInput() {
 
 		Scanner scanner = new Scanner(System.in);
-		out.println("Bitte geben Sie den Grad Ihres Polynoms ein: ");
-		int grad = scanner.nextInt();
-		out.println("Ihr Grad: " + grad);
+		int grad = 0;
+		while (true) {
 
+			out.println("Bitte geben Sie den Grad Ihres Polynoms ein: ");
+			try {
+				grad = scanner.nextInt();
+				// perhaps check here that no grade may be chosen greater than 6
+				if (grad < 0) {
+					out.println("Der eingegebene Grad darf nicht negativ sein");
+				} else {
+					out.println("Ihr Grad: " + grad);
+					break;
+				}
+			} catch (InputMismatchException e) {
+				out.println("Falsche Eingabe. Bitte geben Sie eine Ganzzahl ein.");
+				scanner = new Scanner(System.in);
+			}
+
+		}
 		double ko[] = new double[grad + 1];
 
 		for (int i = grad; i >= 0; i--) {
@@ -261,6 +280,11 @@ public class ConsoleCommunicator {
 	}
 
 	public void ouptutSavedPolynoms(List<Polynom> polynoms) {
+
+		if (polynoms.isEmpty()) {
+			out.println("Keine gespeicherten Polynome vorhanden.");
+			return;
+		}
 
 		out.println("Gespeicherte Polynome:");
 		out.println(); // add an empty line
