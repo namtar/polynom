@@ -1,6 +1,7 @@
 package de.htw.berlin.student.polynom;
 
 import de.htw.berlin.student.polynom.controller.PolynomCalculator;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 
@@ -9,6 +10,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.htw.berlin.student.polynom.model.DividedPolynom;
 import de.htw.berlin.student.polynom.model.Polynom;
 
 /**
@@ -56,5 +58,16 @@ public class PolynomCalculatorTest {
 		Assert.assertEquals(new BigDecimal(-6), result.getCoefficients().get(0));
 		Assert.assertEquals(new BigDecimal(10), result.getCoefficients().get(1));
 		Assert.assertEquals(new BigDecimal(-60), result.getCoefficients().get(2));
+	}
+
+	/**
+	 * Tests the {@link PolynomCalculator#divideWithHorner(Polynom, BigDecimal)}.
+	 */
+	@Test
+	public void testDivision() {
+
+		Polynom po = new Polynom(Arrays.asList(new BigDecimal(1), new BigDecimal(2), new BigDecimal(3)));
+		DividedPolynom result = testInstance.divideWithHorner(po, new BigDecimal(55));
+
 	}
 }

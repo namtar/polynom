@@ -172,20 +172,25 @@ public class PolynomCalculator {
 		List<BigDecimal> poly1Coeffs = poly1.getCoefficients();
 		for (int i = poly1Coeffs.size() - 1; i >= 0; i--) {
 			if (i == poly1Coeffs.size() - 1) {
-				newCoeffs.add(poly1.getCoefficients().get(i));
+				newCoeffs.add(i, poly1.getCoefficients().get(i));
 			} else {
-				newCoeffs.add(value.multiply(newCoeffs.get(i - 1)).add(poly1Coeffs.get(i)));
+				newCoeffs.add(value.multiply(newCoeffs.get(i + 1)).add(poly1Coeffs.get(i)));
 			}
 		}
 
 		List<BigDecimal> coefficients = new ArrayList<BigDecimal>();
 		// start with size - 2 because we dont want to have the rest of the division in our coefficients list
-		for (int i = newCoeffs.size() - 2; i >= 0; i--) {
+		// for (int i = newCoeffs.size() - 2; i >= 0; i--) {
+		// coefficients.add(newCoeffs.get(i));
+		// }
+
+		// start with i = 1 because we dont want the rest of the division which is on index 0 in our coefficients list
+		for (int i = 1; i < newCoeffs.size(); i++) {
 			coefficients.add(newCoeffs.get(i));
 		}
 
 		Polynom polynom = new Polynom(coefficients);
-		BigDecimal rest = newCoeffs.get(newCoeffs.size() - 1);
+		BigDecimal rest = newCoeffs.get(0);
 
 		return new DividedPolynom(polynom, rest);
 	}
