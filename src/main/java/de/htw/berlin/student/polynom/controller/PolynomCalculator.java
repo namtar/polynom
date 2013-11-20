@@ -105,8 +105,10 @@ public class PolynomCalculator {
 
 		for (int i = 0; i < maxLength; i++) {
 
-			BigDecimal coef1 = new BigDecimal(0); // is the coeff of listOne for the index if list has one else zero BigDecimal.
-			BigDecimal coef2 = new BigDecimal(0);// is the coeff of listOne for the index if list has one else zero BigDecimal.
+			BigDecimal coef1 = new BigDecimal(0); // is the coeff of listOne for the index if list has one else zero
+													// BigDecimal.
+			BigDecimal coef2 = new BigDecimal(0);// is the coeff of listOne for the index if list has one else zero
+													// BigDecimal.
 
 			if (i < poly1.getCoefficients().size()) {
 				coef1 = poly1.getCoefficients().get(i);
@@ -167,30 +169,26 @@ public class PolynomCalculator {
 	 */
 	public DividedPolynom divideWithHorner(Polynom poly1, BigDecimal value) {
 
-		List<BigDecimal> newCoeffs = new ArrayList<BigDecimal>();
+		BigDecimal[] newCoeffsArr = new BigDecimal[poly1.getCoefficients().size()];
 
 		List<BigDecimal> poly1Coeffs = poly1.getCoefficients();
 		for (int i = poly1Coeffs.size() - 1; i >= 0; i--) {
 			if (i == poly1Coeffs.size() - 1) {
-				newCoeffs.add(i, poly1.getCoefficients().get(i));
+				newCoeffsArr[i] = poly1.getCoefficients().get(i);
 			} else {
-				newCoeffs.add(value.multiply(newCoeffs.get(i + 1)).add(poly1Coeffs.get(i)));
+				newCoeffsArr[i] = value.multiply(newCoeffsArr[i + 1]).add(poly1Coeffs.get(i));
 			}
 		}
 
 		List<BigDecimal> coefficients = new ArrayList<BigDecimal>();
-		// start with size - 2 because we dont want to have the rest of the division in our coefficients list
-		// for (int i = newCoeffs.size() - 2; i >= 0; i--) {
-		// coefficients.add(newCoeffs.get(i));
-		// }
 
 		// start with i = 1 because we dont want the rest of the division which is on index 0 in our coefficients list
-		for (int i = 1; i < newCoeffs.size(); i++) {
-			coefficients.add(newCoeffs.get(i));
+		for (int i = 1; i < newCoeffsArr.length; i++) {
+			coefficients.add(newCoeffsArr[i]);
 		}
 
 		Polynom polynom = new Polynom(coefficients);
-		BigDecimal rest = newCoeffs.get(0);
+		BigDecimal rest = newCoeffsArr[0];
 
 		return new DividedPolynom(polynom, rest);
 	}

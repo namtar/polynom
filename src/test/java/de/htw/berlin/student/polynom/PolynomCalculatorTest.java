@@ -30,11 +30,6 @@ public class PolynomCalculatorTest {
 		this.testInstance = new PolynomCalculator();
 	}
 
-	@Test
-	public void dummyTest() {
-
-	}
-
 	/**
 	 * Tests the {@link PolynomCalculator#add(Polynom, Polynom)}.ÏÍ
 	 */
@@ -67,7 +62,11 @@ public class PolynomCalculatorTest {
 	public void testDivision() {
 
 		Polynom po = new Polynom(Arrays.asList(new BigDecimal(1), new BigDecimal(2), new BigDecimal(3)));
-		DividedPolynom result = testInstance.divideWithHorner(po, new BigDecimal(55));
+		DividedPolynom result = testInstance.divideWithHorner(po, new BigDecimal(2));
 
+		Assert.assertTrue(result.getPolynom().getCoefficients().size() == 2);
+		Assert.assertEquals(new BigDecimal(8), result.getPolynom().getCoefficients().get(0));
+		Assert.assertEquals(new BigDecimal(3), result.getPolynom().getCoefficients().get(1));
+		Assert.assertEquals(new BigDecimal(17), result.getRest());
 	}
 }
