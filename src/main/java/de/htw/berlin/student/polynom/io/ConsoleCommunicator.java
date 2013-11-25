@@ -25,7 +25,7 @@ public class ConsoleCommunicator {
 
     public ConsoleCommunicator() {
         try {
-			// Special case for windows console
+            // Special case for windows console
             // out = new PrintStream(System.out, true, "CP850");
             out = new PrintStream(System.out, true, "UTF8");
         } catch (UnsupportedEncodingException e) {
@@ -116,7 +116,7 @@ public class ConsoleCommunicator {
 
         for (int i = grad; i >= 0; i--) {
 
-			// loop to ensure the correct input of one coefficient. One will remain in this loop until the input is
+            // loop to ensure the correct input of one coefficient. One will remain in this loop until the input is
             // valid.
             while (true) {
                 try {
@@ -323,6 +323,7 @@ public class ConsoleCommunicator {
                     out.println();
                 } else {
                     poly1 = polynoms.get(choice);
+                    out.println("Gewählt " + choice);
                     finished = true;
                 }
             } catch (InputMismatchException e) {
@@ -346,6 +347,7 @@ public class ConsoleCommunicator {
                     out.println();
                 } else {
                     poly2 = polynoms.get(choice);
+                    out.println("Gewählt " + choice);
                     finished = true;
                 }
             } catch (InputMismatchException e) {
