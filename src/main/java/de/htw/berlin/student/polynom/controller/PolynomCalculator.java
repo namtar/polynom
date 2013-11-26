@@ -70,8 +70,11 @@ public class PolynomCalculator {
 		}
 
 		// do calculation
-		BigDecimal[] coeff1 = (BigDecimal[]) poly1.getCoefficients().toArray();
-		BigDecimal[] coeff2 = (BigDecimal[]) poly2.getCoefficients().toArray();
+		BigDecimal[] coeff1 = new BigDecimal[poly1.getCoefficients().size()];
+		BigDecimal[] coeff2 = new BigDecimal[poly2.getCoefficients().size()];
+
+		poly1.getCoefficients().toArray(coeff1);
+		poly2.getCoefficients().toArray(coeff2);
 
 		BigDecimal[] multiplied = new BigDecimal[Math.max(coeff1.length, coeff2.length) + 1];
 		for (int i = 0; i < coeff1.length; i++) {
