@@ -76,14 +76,15 @@ public class PolynomCalculator {
 		poly1.getCoefficients().toArray(coeff1);
 		poly2.getCoefficients().toArray(coeff2);
 
-		BigDecimal[] multiplied = new BigDecimal[Math.max(coeff1.length, coeff2.length) + 1];
+		BigDecimal[] multiplied = new BigDecimal[(coeff1.length - 1) + (coeff2.length - 1) + 1];
 		for (int i = 0; i < coeff1.length; i++) {
 			for (int j = 0; j < coeff2.length; j++) {
 				int newIndex = i + j;
 				if (multiplied[newIndex] == null) {
 					multiplied[newIndex] = new BigDecimal(0);
 				}
-				multiplied[newIndex].add(coeff1[i].multiply(coeff2[j]));
+				multiplied[newIndex] = multiplied[newIndex].add(coeff1[i].multiply(coeff2[j]));
+
 			}
 		}
 

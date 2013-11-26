@@ -69,4 +69,21 @@ public class PolynomCalculatorTest {
 		Assert.assertEquals(new BigDecimal(3), result.getPolynom().getCoefficients().get(1));
 		Assert.assertEquals(new BigDecimal(17), result.getRest());
 	}
+
+	/**
+	 * Tests the {@link PolynomCalculator#multiply(Polynom, Polynom)}.
+	 */
+	@Test
+	public void testMultiply() {
+
+		Polynom po = new Polynom(Arrays.asList(new BigDecimal(1), new BigDecimal(2), new BigDecimal(3)));
+		Polynom result = testInstance.multiply(po, po);
+
+		Assert.assertNotNull(result);
+
+		// if grad of polynom one and two is each 3, then the new grade is 7.
+		Assert.assertTrue(result.getCoefficients().size() == 5);
+		
+		// TODO: do multiplication via feet and verify correct values.
+	}
 }
