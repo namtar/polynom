@@ -111,7 +111,7 @@ public class PolynomCalculatorController {
 					BigDecimal v1 = communicator.inputValue("Geben Sie einen Wert für x ein.");
 					BigDecimal evaluated = calculator.evaluate(polynom1, v1);
 					communicator.outputCalculationResultMessage(Operation.EVALUATE);
-					communicator.outputMessage("Der Skalar Ihrere Substitution von X beträgt: " + evaluated);
+					communicator.outputMessage("Der Skalar Ihrer Substitution von X beträgt: " + evaluated);
 					break;
 				case DERIVE:
 					checkForPolynoms();
