@@ -323,7 +323,8 @@ public class ConsoleCommunicator {
                     out.println();
                 } else {
                     poly1 = polynoms.get(choice);
-                    out.println("Gewählt " + choice);
+                    out.print("Gewählt: ");
+                    polyOutput(polynoms.get(choice));
                     finished = true;
                 }
             } catch (InputMismatchException e) {
@@ -347,7 +348,8 @@ public class ConsoleCommunicator {
                     out.println();
                 } else {
                     poly2 = polynoms.get(choice);
-                    out.println("Gewählt " + choice);
+                    out.print("Gewählt: ");
+                    polyOutput(polynoms.get(choice));
                     finished = true;
                 }
             } catch (InputMismatchException e) {
